@@ -6,6 +6,7 @@
 package pilas;
 
 import comun.EmptyStructureException;
+import pilas.Stack;
 
 /**
  *

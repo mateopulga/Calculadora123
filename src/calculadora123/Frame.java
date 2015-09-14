@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -23,14 +24,13 @@ import javax.swing.JTextField;
  * @author Mateo
  */
 public class Frame extends JFrame {
-    
-    
+
     private JTextField jTextField;
     private JButton cero, uno, dos, tres, cuatro, cinco, seix, siete, ocho, nueve, por, menos, mas, div, igual, borrar, punto;
     static String texto = "";
     double var;
     ArrayList<String> lista = new ArrayList<>();
-    ArrayList<String> lista2=new ArrayList<>();
+    ArrayList<String> lista2 = new ArrayList<>();
     ArrayStack<String> pilaCadena = new ArrayStack<>();
 
     public Frame() {
@@ -52,7 +52,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "1";
-                pilaCadena.push("1");
+                
                 jTextField.setText(texto);
             }
         });
@@ -64,7 +64,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "2";
-                pilaCadena.push("2");
+                
                 jTextField.setText(texto);
             }
         });
@@ -76,7 +76,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "3";
-                pilaCadena.push("3");
+                
                 jTextField.setText(texto);
             }
         });
@@ -88,7 +88,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "0";
-                pilaCadena.push("0");
+                
                 jTextField.setText(texto);
             }
         });
@@ -100,7 +100,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "*";
-                pilaCadena.push("*");
+                //pilaCadena.push("*");
                 jTextField.setText(texto);
             }
         });
@@ -112,7 +112,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "4";
-                pilaCadena.push("4");
+                //pilaCadena.push("4");
                 jTextField.setText(texto);
             }
         });
@@ -124,7 +124,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "5";
-                pilaCadena.push("5");
+                
                 jTextField.setText(texto);
             }
         });
@@ -136,7 +136,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "6";
-                pilaCadena.push("6");
+                
                 jTextField.setText(texto);
             }
         });
@@ -147,9 +147,8 @@ public class Frame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                var = var + Double.parseDouble(jTextField.getText());
-                texto =texto + "+";
-                pilaCadena.push("+");
+                texto = texto + "+";
+                
                 jTextField.setText(texto);
             }
         });
@@ -161,7 +160,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "/";
-                pilaCadena.push("/");
+                
                 jTextField.setText(texto);
             }
         });
@@ -173,7 +172,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "7";
-                pilaCadena.push("7");
+                
                 jTextField.setText(texto);
 
             }
@@ -186,7 +185,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "8";
-                pilaCadena.push("8");
+                
                 jTextField.setText(texto);
             }
         });
@@ -198,7 +197,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "9";
-                pilaCadena.push("9");
+                
                 jTextField.setText(texto);
             }
         });
@@ -210,7 +209,7 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = texto + "-";
-                pilaCadena.push("-");
+                
                 jTextField.setText(texto);
             }
         });
@@ -222,18 +221,24 @@ public class Frame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 texto = "";
-                pilaCadena = null;
+                while (!pilaCadena.isEmpty()) {
+                    pilaCadena.pop();                    
+                }                
                 jTextField.setText(texto);
             }
         });
-       
-        
+
         igual = new JButton("=");
         add(igual);
         igual.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                String z = jTextField.getText();
+                char[] x = z.toCharArray();
+                for (int i = 0; i < x.length; i++) {
+                    pilaCadena.push(x[i]+"");
+                }
                 String aux = "";
                 while (!pilaCadena.isEmpty()) {
                     if (!(pilaCadena.peak().equals("*") || pilaCadena.peak().equals("/") || pilaCadena.peak().equals("+") || pilaCadena.peak().equals("-"))) {
@@ -248,70 +253,68 @@ public class Frame extends JFrame {
                         lista.add(pilaCadena.pop());
                         aux = "";
                     }
-                    int j = 0;
-                    String[] voltear = null;
-                    
-                   /* for (int i = lista.size(); i >= 0; i--) {
-                        voltear[j] = lista.get(i);
-                        lista2.add(voltear[j]);
-                        j++;
-                    }*/
-                    Collections.reverse(lista);
-
                 }
-                while (!(lista.size()== 1)) {                    
-                    while (lista.contains("*")) {                        
+                Collections.reverse(lista);
+                while (!(lista.size() == 1)) {
+                    while (lista.contains("*")) {
                         for (int i = 0; i < lista.size(); i++) {
-                            if ("*".equals(lista.get(i))){
-                              double factor1 =Double.parseDouble(lista.get(i-1));
-                              double factor2 = Double.parseDouble(lista.get(i+1));
-                              lista.set(i, (factor1*factor2+""));
-                              lista.set(i-1, "");
-                              lista.set(i+1, "");
-                              lista.removeAll(Collections.singleton(""));
+                            if ("*".equals(lista.get(i))) {
+                                double factor1 = Double.parseDouble(lista.get(i - 1));
+                                double factor2 = Double.parseDouble(lista.get(i + 1));
+                                String var = factor1 * factor2 + "";
+                                lista.set(i, var);
+                                lista.set(i - 1, "");
+                                lista.set(i + 1, "");
+                                lista.removeAll(Collections.singleton(""));
                             }
                         }
                     }
-                    while (lista.contains("/")) {                        
-                        for (int i = 0; i < lista2.size(); i++) {
-                            if ("*".equals(lista2.get(i))){
-                              double factor1 =Double.parseDouble(lista2.get(i-1));
-                              double factor2=Double.parseDouble(lista2.get(i+1));
-                              lista2.set(i, (factor1/factor2+""));
-                              lista2.set(i-1, "");
-                              lista2.set(i+1, "");
-                              lista2.removeAll(Collections.singleton(""));
+                    while (lista.contains("/")) {
+                        for (int i = 0; i < lista.size(); i++) {
+                            if ("/".equals(lista.get(i))) {
+                                double factor1 = Double.parseDouble(lista.get(i - 1));
+                                double factor2 = Double.parseDouble(lista.get(i + 1));
+                                String var = factor1 / factor2 + "";
+                                lista.set(i, var);
+                                lista.set(i - 1, "");
+                                lista.set(i + 1, "");
+                                lista.removeAll(Collections.singleton(""));
                             }
                         }
                     }
-                    while (lista.contains("+")) {                        
-                        for (int i = 0; i < lista2.size(); i++) {
-                            if ("*".equals(lista2.get(i))){
-                              double factor1 =Double.parseDouble(lista2.get(i-1));
-                              double factor2=Double.parseDouble(lista2.get(i+1));
-                              lista2.set(i, (factor1+factor2+""));
-                              lista2.set(i-1, "");
-                              lista2.set(i+1, "");
-                              lista2.removeAll(Collections.singleton(""));
+                    while (lista.contains("+")) {
+                        for (int i = 0; i < lista.size(); i++) {
+                            if ("+".equals(lista.get(i))) {
+                                double factor1 = Double.parseDouble(lista.get(i - 1));
+                                double factor2 = Double.parseDouble(lista.get(i + 1));
+                                String var = factor1 + factor2 + "";
+                                lista.set(i, var);
+                                lista.set(i - 1, "");
+                                lista.set(i + 1, "");
+                                lista.removeAll(Collections.singleton(""));
                             }
                         }
                     }
-                    while (lista.contains("-")) {                        
-                        for (int i = 0; i < lista2.size(); i++) {
-                            if ("*".equals(lista2.get(i))){
-                              double factor1 =Double.parseDouble(lista2.get(i-1));
-                              double factor2=Double.parseDouble(lista2.get(i+1));
-                              lista2.set(i, (factor1-factor2+""));
-                              lista2.set(i-1, "");
-                              lista2.set(i+1, "");
-                              lista2.removeAll(Collections.singleton(""));
+                    while (lista.contains("-")) {
+                        for (int i = 0; i < lista.size(); i++) {
+                            if ("-".equals(lista.get(i))) {
+                                double factor1 = Double.parseDouble(lista.get(i - 1));
+                                double factor2 = Double.parseDouble(lista.get(i + 1));
+                                String var = factor1 - factor2 + "";
+                                lista.set(i, var);
+                                lista.set(i - 1, "");
+                                lista.set(i + 1, "");
+                                lista.removeAll(Collections.singleton(""));
                             }
                         }
                     }
+                    jTextField.setText("");
+                    jTextField.setText(jTextField.getText() + lista.get(0));
+                    pilaCadena.push("");
                 }
-                jTextField.setText(lista2.get(0));
 
             }
+
         });
         punto = new JButton(".");
         add(punto);

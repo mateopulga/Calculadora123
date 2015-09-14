@@ -5,6 +5,8 @@
  */
 package calculadora123;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Mateo
@@ -16,6 +18,12 @@ public class Calculadora123 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Frame frame=new Frame();
+        frame.setSize(255, 210);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);        
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
 }

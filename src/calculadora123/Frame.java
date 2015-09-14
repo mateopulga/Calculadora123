@@ -33,7 +33,7 @@ public class Frame extends JFrame {
     ArrayList<String> lista2 = new ArrayList<>();
     ArrayStack<String> pilaCadena = new ArrayStack<>();
 
-    public Frame() {
+    public Frame() throws NumberFormatException{
         super("Calculadora");
         setIconImage(new ImageIcon(getClass().getResource("/Img/cal.png")).getImage());
 
@@ -273,7 +273,10 @@ public class Frame extends JFrame {
                         for (int i = 0; i < lista.size(); i++) {
                             if ("/".equals(lista.get(i))) {
                                 double factor1 = Double.parseDouble(lista.get(i - 1));
-                                double factor2 = Double.parseDouble(lista.get(i + 1));
+                                double factor2 = Double.parseDouble(lista.get(i + 1));                                
+                                if(factor2==0){
+                                    JOptionPane.showMessageDialog(Frame.this, "No dividir por cero", "Error",JOptionPane.ERROR_MESSAGE);
+                                }
                                 String var = factor1 / factor2 + "";
                                 lista.set(i, var);
                                 lista.set(i - 1, "");
